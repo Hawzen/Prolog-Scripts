@@ -1,4 +1,4 @@
-:- dynamic(clicked/3).
+:- dynamic(switched/2).
 
 human(me).
 
@@ -12,13 +12,13 @@ agent(X) :- human(X);
 			bot(X).
 
 on(X, 0) :- agent(X).
-on(X, T, clicked(A, X, LastT)) :- 
-			LastT = T - 1, agent(A), T >= 0,
-			off(X, LastT).
+on(X, T) :- T >= 0, LastT is T - 1,
+			not(switched(X, LastT)), on(X, LastT);
 
-on(X, T, not(clicked(H, X, LastT))) :-
-			LastT = T - 1, human(H), T >= 0, 
-			on(X, LastT), not(clicked(H, X, LastT)).
+			T >= 0, LastT is T - 1,
+			switched(X, LastT), off(X, LastT).
+
+on_switched(X, T, switched(X, PastT)) :- T > PastT, on(X, T).
 
 off(X, T) :- \+ on(X, T).
 
