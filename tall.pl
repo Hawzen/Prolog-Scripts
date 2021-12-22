@@ -1,4 +1,5 @@
-c.
+:- dynamic(taller/2).
+
 taller(a, b).
 taller(b, c).
 
